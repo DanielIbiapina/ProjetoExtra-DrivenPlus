@@ -99,7 +99,7 @@ height: 52px;
 background: #FF4791;
 border-radius: 8px;
 box-sizing: border-box;
-font-family: 'Lexend Deca';
+font-family: 'Roboto';
 font-style: normal;
 font-weight: 400;
 font-size: 20.976px;
@@ -113,7 +113,7 @@ margin-top: 8px;
 const BotaoNaoTenhoConta = styled.div`
 width: 232px;
 height: 17px;
-font-family: 'Lexend Deca';
+font-family: 'Roboto';
 font-style: normal;
 font-weight: 400;
 font-size: 13.976px;

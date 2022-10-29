@@ -12,6 +12,7 @@ export default function Login() {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [loading, setLoading] = useState(false)
+    const { setAndPersistToken } = useContext(Contexto);
     const navigate = useNavigate()
 
 
@@ -27,6 +28,7 @@ export default function Login() {
             setLoading(false)
             alert(`Bem-vindo ${resposta.data.name}, login foi um sucesso`)
             //setLoginData(resposta.data)
+            setAndPersistToken(resposta.data.token);
             const dados = resposta.data
             const dadosSerializados = JSON.stringify(dados)
             localStorage.setItem("lista", dadosSerializados);
@@ -34,7 +36,7 @@ export default function Login() {
             console.log(resposta.data)
             if(resposta.data.membership == null){
                 navigate("/subscriptions")
-            } else navigate("/")
+            } else navigate("/home")
         });
 
         requisicao.catch(erro => {
@@ -101,7 +103,7 @@ height: 52px;
 background: #FF4791;
 border-radius: 8px;
 box-sizing: border-box;
-font-family: 'Lexend Deca';
+font-family: 'Roboto';
 font-style: normal;
 font-weight: 400;
 font-size: 20.976px;
@@ -115,7 +117,7 @@ margin-top: 8px;
 const BotaoNaoTenhoConta = styled.div`
 width: 232px;
 height: 17px;
-font-family: 'Lexend Deca';
+font-family: 'Roboto';
 font-style: normal;
 font-weight: 400;
 font-size: 13.976px;

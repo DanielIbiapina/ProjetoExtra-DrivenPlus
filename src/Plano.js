@@ -1,13 +1,16 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 
 export default function Plano({plano}) {
     return (
+        <Link to={`/subscriptions/${plano.id}`}>
         <ContainerPlano>
             <LogoPlano src={plano.image}>
             </LogoPlano>
             <p>R$ {plano.price}</p>
         </ContainerPlano>
+        </Link>
     );
 }
 

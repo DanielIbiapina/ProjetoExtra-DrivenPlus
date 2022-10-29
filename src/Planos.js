@@ -1,21 +1,20 @@
 import styled from "styled-components";
-import logo1 from "./Group-1.png"
-import logo2 from "./Group-2.png"
-import logo3 from "./Group-3.png"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Plano from "./Plano";
+import { useContext } from "react";
+import Contexto from "./Contexto";
 
 export default function Subscriptions() {
     const listaSerializada = localStorage.getItem("lista");
     const lista = JSON.parse(listaSerializada);
     console.log(lista)
-
+    const { token, setToken, setAndPersistToken } = useContext(Contexto);
     const [planos, setPlanos] = useState(null)
 
     const config = {
         headers: {
-          Authorization: `Bearer ${lista.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
       
