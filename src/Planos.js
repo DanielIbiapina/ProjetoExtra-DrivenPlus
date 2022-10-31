@@ -6,15 +6,14 @@ import { useContext } from "react";
 import Contexto from "./Contexto";
 
 export default function Subscriptions() {
-    const listaSerializada = localStorage.getItem("lista");
-    const lista = JSON.parse(listaSerializada);
-    console.log(lista)
+    
     const { token, setToken, setAndPersistToken } = useContext(Contexto);
     const [planos, setPlanos] = useState(null)
+    const tokenOnLocalStorage = localStorage.getItem("token");
 
     const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${tokenOnLocalStorage}`,
         },
       };
       
@@ -22,7 +21,7 @@ export default function Subscriptions() {
 
       const promise = axios.get("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions/memberships", config)
       promise.then(respost => {
-          alert('planos resgatados')
+          console.log('planos resgatados')
           console.log(respost.data)
           setPlanos(respost.data)
       });

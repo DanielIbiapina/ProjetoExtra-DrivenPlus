@@ -12,8 +12,9 @@ export default function Login() {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [loading, setLoading] = useState(false)
-    const { setAndPersistToken } = useContext(Contexto);
+    const { setAndPersistToken, dadoss, setDadoss } = useContext(Contexto);
     const navigate = useNavigate()
+    
 
 
     function fazerLogin(event) {
@@ -26,12 +27,13 @@ export default function Login() {
 
         requisicao.then(resposta => {
             setLoading(false)
-            alert(`Bem-vindo ${resposta.data.name}, login foi um sucesso`)
+            console.log(`Bem-vindo ${resposta.data.name}, login foi um sucesso`)
             //setLoginData(resposta.data)
             setAndPersistToken(resposta.data.token);
             const dados = resposta.data
             const dadosSerializados = JSON.stringify(dados)
             localStorage.setItem("lista", dadosSerializados);
+            
 
             console.log(resposta.data)
             if(resposta.data.membership == null){

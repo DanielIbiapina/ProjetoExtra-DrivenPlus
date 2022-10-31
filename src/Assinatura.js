@@ -6,6 +6,8 @@ import Beneficios from "./Beneficios";
 import ReactModal from "react-modal";
 import { useContext } from "react";
 import Contexto from "./Contexto";
+import prancheta from "./prancheta.png"
+import dinheiro from "./dinheiro.png"
 
 const customStyles = {
     content: {
@@ -37,6 +39,7 @@ export default function Assinatura() {
     const [validade, setValidade] = useState('')
     const [modalIsOpen, setIsOpen] = useState(false);
     const { token, setToken, setAndPersistToken } = useContext(Contexto);
+    const tokenOnLocalStorage = localStorage.getItem("token");
     const navigate = useNavigate()
     let subtitle;
     let botoes;
@@ -45,7 +48,7 @@ export default function Assinatura() {
 
     const config = {
         headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${tokenOnLocalStorage}`,
         },
     };
 
@@ -53,7 +56,7 @@ export default function Assinatura() {
 
         const promise = axios.get(`https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions/memberships/${idPlano}`, config)
         promise.then(respost => {
-            alert('assinatura resgatados')
+            console.log('assinatura resgatados')
             console.log(respost.data)
             setAssinatura(respost.data)
         });
@@ -124,10 +127,10 @@ export default function Assinatura() {
 
         requisicao.then(resposta => {
             console.log(resposta.data)
-            alert(`Parabéns, plano ${resposta.data.membership.name} assinado`)
+            console.log(`Parabéns, plano ${resposta.data.membership.name} assinado`)
             const dados = resposta.data
             const dadosSerializados = JSON.stringify(dados)
-            localStorage.setItem("lista", dadosSerializados);
+            localStorage.setItem("listaAssinatura", dadosSerializados);
             navigate('/home')
         });
 
@@ -152,7 +155,10 @@ export default function Assinatura() {
             <BodyAssinatura>
                 <div>
                     <BeneficiosContainer>
-                        <p>Benefícios: </p>
+                        <div>
+                        <img src= {prancheta} />
+                        <p>  Benefícios: </p>
+                        </div>
                         {assinatura.perks.map((beneficio, index) => {
                             return (
                                 <Beneficios beneficio={beneficio} key={index} index={index} />
@@ -161,7 +167,10 @@ export default function Assinatura() {
                         )}
                     </BeneficiosContainer>
                     <Preço>
+                        <div>
+                        <img src= {dinheiro} />
                         <p>Preços:</p>
+                        </div>
                         <h1>R$ {assinatura.price} cobrados mensalmente</h1>
                     </Preço>
                     <Form onSubmit={openModal}>
@@ -216,14 +225,15 @@ color: #FFFFFF;
 margin-top: 12px;
 `
 const Preço = styled.div`
+margin-top: 12px;
 p{
     font-family: 'Roboto';
 font-style: normal;
 font-weight: 400;
 font-size: 16px;
 line-height: 19px;
-margin-top: 12px;
 color: #FFFFFF;
+margin-left: 4px;
 }
 h1{
     font-family: 'Roboto';
@@ -231,9 +241,10 @@ font-style: normal;
 font-weight: 400;
 font-size: 14px;
 line-height: 16px;
-
 color: #FFFFFF;
-
+}
+div{
+    display: flex;
 }
 `
 const BeneficiosContainer = styled.div`
@@ -243,9 +254,14 @@ p{
     font-weight: 400;
     font-size: 16px;
     line-height: 19px;
-    color: #FFFFFF;
-   
+    color: #FFFFFF; 
     
+}
+div{
+    display: flex;
+}
+img{
+    margin-right: 4px;
 }
 `
 const BodyAssinatura = styled.div`
@@ -268,6 +284,7 @@ justify-content: center;
 align-items: center;
 color: #FFFFFF;
 margin-top: 8px;
+margin-bottom: 40px;
 `
 
 const Input1 = styled.input`

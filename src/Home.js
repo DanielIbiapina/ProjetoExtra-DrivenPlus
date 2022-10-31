@@ -9,19 +9,22 @@ import { useContext } from "react";
 export default function Home() {
     const listaSerializada = localStorage.getItem("lista");
     const lista = JSON.parse(listaSerializada);
-    const { token, setToken, setAndPersistToken } = useContext(Contexto);
+    const listaSerializadaAssinatura = localStorage.getItem("listaAssinatura");
+    const listaAssinatura = JSON.parse(listaSerializadaAssinatura);
+    const { token, setToken, setAndPersistToken, loginAutoHome, setLoginAutoHome } = useContext(Contexto);
     const navigate = useNavigate()
     console.log(lista)
-    console.log(token)
+    console.log(listaAssinatura)
+    const tokenOnLocalStorage = localStorage.getItem("token");
 
-    //'fazer funçao mudar plano'
+
 
 
 
     function deletarPlano() {
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${tokenOnLocalStorage}`,
             },
         };
         const confirm = window.confirm('Deseja cancelar?')
@@ -30,46 +33,68 @@ export default function Home() {
         }
         if (confirm == true) {
             const promise = axios.delete(`https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions`, config)
-            promise.then (resposta => {
-            console.log(resposta.data)
-            navigate('/subscriptions')
+            promise.then(resposta => {
+                console.log(lista)
+                console.log(listaAssinatura)
+                navigate('/subscriptions')
+
             });
+            
         }
     }
 
 
+
     return (
+        <>
+        <HeaderContainer>
+            <img src= {listaAssinatura.membership.image} />
+        </HeaderContainer>
         <BodyHome>
             <p>Olá, {lista.name}</p>
             <div>
-                {lista.membership.perks.map((beneficio, index) => {
+                {listaAssinatura.membership.perks.map((beneficio, index) => {
                     return (
+                        <a href= {beneficio.link}>
                         <Botao>
                             <p>{beneficio.title}</p>
                         </Botao>
+                        </a>
                     )
                 }
                 )}
             </div>
             <div>
                 <Link to={'/subscriptions'} >
-                    <Botao>Mudar plano</Botao>
+                    <Botao><p>Mudar plano</p></Botao>
                 </Link>
-                <Botao onClick={deletarPlano}>Cancelar plano</Botao>
+                <BotaoCancelar onClick={deletarPlano}><p>Cancelar plano</p></BotaoCancelar>
             </div>
 
         </BodyHome>
+        </>
     );
 }
 
+const HeaderContainer =styled.div`
+margin-left: 38px;
+margin-top: 32px;
+`
 const BodyHome = styled.div`
 height: 100vmax;
 display: flex;
 flex-direction: column;
 align-items: center;
-justify-content: space-between;
+justify-content: space-around;
+margin-top: 12px;
 p{
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 28px;
 
+color: #FFFFFF;
 }
 `
 const Botao = styled.button`
@@ -78,14 +103,38 @@ height: 52px;
 background: #FF4791;
 border-radius: 8px;
 box-sizing: border-box;
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-size: 20.976px;
-line-height: 26px;
 display: flex;
 justify-content: center;
 align-items: center;
-color: #FFFFFF;
 margin-top: 8px;
+p{
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 16px;
+
+color: #FFFFFF;
+}
+`
+
+const BotaoCancelar = styled.button`
+width: 303px;
+height: 52px;
+background: #FF4747;;
+border-radius: 8px;
+box-sizing: border-box;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 8px;
+p{
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 16px;
+color: #FFFFFF;
+
+}
 `
